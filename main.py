@@ -590,6 +590,7 @@ def main():
     transparent_window.show()
 
     previous_parameters = None
+    power = None
 
     while True:
         if window != GetForegroundWindow():
@@ -642,29 +643,30 @@ def main():
                 wind_angle,
                 wind_power
             )
-            image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
-            draw_position(source_position, process, image)
-            draw_position(target_position, process, image)
-            if power is not None:
-                mark_on_power_bar(image, power)
-                draw_shot_line(
-                    process,
-                    image,
-                    mobile,
-                    source_position,
-                    direction,
-                    backshot,
-                    angle,
-                    power,
-                    wind_angle,
-                    wind_power
-                )
 
-            transparent_window.show_image(image)
+        image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
+        draw_position(source_position, process, image)
+        draw_position(target_position, process, image)
+        if power is not None:
+            mark_on_power_bar(image, power)
+            draw_shot_line(
+                process,
+                image,
+                mobile,
+                source_position,
+                direction,
+                backshot,
+                angle,
+                power,
+                wind_angle,
+                wind_power
+            )
 
-            previous_parameters = parameters
+        transparent_window.show_image(image)
+
+        previous_parameters = parameters
         
-        cv.waitKey(1000)
+        cv.waitKey(1)
 
     sys.exit(application.exec_())
 
