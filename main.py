@@ -265,6 +265,7 @@ def determine_power(
     wind_power
 ):
     target_x, target_y = target_position
+    target_y = MAP_HEIGHT - target_y
     minimum_distance = 9999
     power_to_shoot_with = None
     STEP_SIZE = 0.05
@@ -588,6 +589,8 @@ def main():
 
     transparent_window.show()
 
+    previous_parameters = None
+
     while True:
         if window != GetForegroundWindow():
             transparent_window.hide()
@@ -610,7 +613,6 @@ def main():
         wind_power = process.read_wind_speed()
         wind_angle = process.read_wind_direction()
         target_x, target_y = determine_target_position(process, window)
-        target_y = MAP_HEIGHT - target_y
         target_position = (target_x, target_y)
         direction = Direction.Left if source_x > target_x else Direction.Right
         backshot = (
@@ -618,30 +620,57 @@ def main():
             (direction == Direction.Right and 90 < angle < 270)
         )
 
-        power = determine_power(mobile, source_position, target_position, angle, direction, backshot, wind_angle,
-                                wind_power)
-        image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
-        draw_position(source_position, process, image)
-        draw_position(target_position, process, image)
-        if power is not None:
-            mark_on_power_bar(image, power)
-            draw_shot_line(
-                process,
-                image,
+        parameters = {
+            'mobile': mobile,
+            'source_position': source_position,
+            'target_position': target_position,
+            'angle': angle,
+            'direction': direction,
+            'backshot': backshot,
+            'wind_angle': wind_angle,
+            'wind_power': wind_power
+        }
+
+        if have_parameters_changed(parameters, previous_parameters):
+            power = determine_power(
                 mobile,
                 source_position,
+                target_position,
+                angle,
                 direction,
                 backshot,
-                angle,
-                power,
                 wind_angle,
                 wind_power
             )
+            image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
+            draw_position(source_position, process, image)
+            draw_position(target_position, process, image)
+            if power is not None:
+                mark_on_power_bar(image, power)
+                draw_shot_line(
+                    process,
+                    image,
+                    mobile,
+                    source_position,
+                    direction,
+                    backshot,
+                    angle,
+                    power,
+                    wind_angle,
+                    wind_power
+                )
 
-        transparent_window.show_image(image)
+            transparent_window.show_image(image)
+
+            previous_parameters = parameters
+        
         cv.waitKey(1000)
 
     sys.exit(application.exec_())
+
+
+def have_parameters_changed(parameters, previous_parameters):
+    return parameters != previous_parameters
 
 
 if __name__ == '__main__':
