@@ -73,7 +73,7 @@ class GunboundProcess:
         )
         return cart_facing_direction
 
-    def read_cart_position(self):
+    def read_cart_position(self, mobile):
         # # a = self.process.read_uint(0x8701CC)
         # # b = self.process.read_uint(a + 0x77138)
         # c = self.process.read_uint(b + 0x4)
@@ -83,30 +83,32 @@ class GunboundProcess:
         # return cart_position
         x = self.process.read_ushort(self.process.base_address + 0x482A58)
         y = self.process.read_ushort(self.process.base_address + 0x482A5C)
-        # cart_facing_direction = self.read_cart_facing_direction()
-        # cart_angle = self.read_cart_angle()
-        # if cart_facing_direction == CartFacingDirection.Left:
-        #     cart_angle = (cart_angle + 180) % 360
-        # offset_x = 0  # 15
-        # offset_y = 0 # -100 # -15
-        # x_offset_angle = radians(cart_angle)
-        # angle_delta = -90 if cart_facing_direction == CartFacingDirection.Left else 90
-        # y_offset_angle = radians(cart_angle + angle_delta)
-        # print(cart_angle, cart_angle + angle_delta)
-        # return (
-        #     int(round(
-        #         x +
-        #         offset_x * cos(x_offset_angle) +
-        #         offset_y * cos(y_offset_angle)
-        #     )),
-        #     int(round(
-        #         y +
-        #         # -50 +
-        #         offset_x * sin(x_offset_angle) +
-        #         offset_y * sin(y_offset_angle)
-        #     )),
-        # )
-        return (x, y)
+        cart_facing_direction = self.read_cart_facing_direction()
+        cart_angle = self.read_cart_angle()
+        if cart_facing_direction == CartFacingDirection.Left:
+            cart_angle = (cart_angle + 180) % 360
+        offset_x = 14
+        offset_y = 16
+        x_offset_angle = cart_angle
+        if mobile == Mobile.Nak:
+            x_offset_angle += 180
+        x_offset_angle = radians(x_offset_angle)
+        angle_delta = -90 if cart_facing_direction == CartFacingDirection.Left else 90
+        y_offset_angle = radians(cart_angle + angle_delta)
+        print(cart_angle, cart_angle + angle_delta)
+        return (
+            int(round(
+                x +
+                offset_x * cos(x_offset_angle) +
+                offset_y * cos(y_offset_angle)
+            )),
+            int(round(
+                y +
+                -50 +
+                -offset_x * sin(x_offset_angle) +
+                -offset_y * sin(y_offset_angle)
+            )),
+        )
 
     def read_screen_center_position(self):
         return (
@@ -120,8 +122,9 @@ SCREEN_HEIGHT = 600
 
 
 def calculate_angle_2_4_power(process: GunboundProcess, window):
+    mobile = Mobile.Turtle
     target_position = determine_target_position(process, window)
-    cart_position = process.read_cart_position()
+    cart_position = process.read_cart_position(mobile)
     distance = abs(target_position[0] - cart_position[0])
     distance_in_parts = convert_distance_to_distance_in_parts(distance)
     angle = 90 - distance_in_parts
@@ -255,10 +258,10 @@ DEGTORAD = 0.0174532925199433
 
 
 def determine_power(process: GunboundProcess, window):
-    mobile = Mobile.Turtle
-    start_position = process.read_cart_position()
+    mobile = Mobile.Boomer
+    start_position = process.read_cart_position(mobile)
     x, y = start_position
-    angle = determine_angle(process, window)
+    angle = determine_angle(process, window, mobile)
     print('Angle: ' + str(angle))
     wind_power = process.read_wind_speed()
     wind_angle = process.read_wind_direction()
@@ -266,9 +269,7 @@ def determine_power(process: GunboundProcess, window):
     # x2 = 728.0
     # y2 = 999.0
     direction = Direction.Left if x > x2 else Direction.Right
-    backshot = False
-    if backshot:
-        direction = change_direction(direction)
+    backshot = True
 
     old_distance = 9999
     hit_power = None
@@ -287,8 +288,8 @@ def determine_power(process: GunboundProcess, window):
             backshot,
             angle,
             power,
-            wind_angle,
             wind_power,
+            wind_angle,
             STEP_SIZE
         ):
             xxx, delta_yyy = position
@@ -316,9 +317,6 @@ def determine_power(process: GunboundProcess, window):
 
 
 def generate_coordinates(mobile, start_position, direction, backshot, angle, power, wind_power, wind_angle, step_size):
-    if backshot:
-        direction = change_direction(direction)
-
     # compute horizontal/wind
     x_v2 = int(cos(wind_angle * DEGTORAD) * wind_power) * g_table2[mobile]
 
@@ -327,7 +325,6 @@ def generate_coordinates(mobile, start_position, direction, backshot, angle, pow
 
     if mobile == Mobile.Nak and backshot and angle <= 70:
         y_v2 *= -8.0
-        direction = change_direction(direction)
 
     x_v = cos(angle * DEGTORAD)
     y_v = sin(angle * DEGTORAD)
@@ -339,7 +336,7 @@ def generate_coordinates(mobile, start_position, direction, backshot, angle, pow
     delta_yyy = MAX_MAP_Y - start_position[1]
 
     # if direction == Direction.Left:
-        #     temp_x_v *= -1
+    #     temp_x_v *= -1
 
     if mobile == Mobile.Nak and backshot and angle <= 70:
         temp_x_v *= 2
@@ -369,15 +366,14 @@ def draw_position(position, process, image):
     )
     min_x = visible_map_area[0]
     min_y = visible_map_area[1]
-    max_x = min_x + visible_map_area[2] - 1
-    max_y = min_y + visible_map_area[3] - 1
 
     x = position[0] - min_x
     y = position[1] - min_y
 
     cv.circle(image, (x, y), 18, (0, 0, 255, 255), thickness=1)
-    if 0 <= x < image.shape[1] and 0 <= y < image.shape[0]:
-        image[y, x] = (0, 0, 255, 255)
+    # cv.circle(image, (x, y), 1, (0, 0, 255, 255), thickness=1)
+    # if 0 <= x < image.shape[1] and 0 <= y < image.shape[0]:
+    #     image[y, x] = (0, 255, 0, 255)
 
 
 def draw_shot_line(
@@ -406,6 +402,7 @@ def draw_shot_line(
 
     STEP_SIZE = 0.05
 
+    previous_position_on_image = None
     for position in generate_coordinates(
         mobile,
         start_position,
@@ -413,16 +410,19 @@ def draw_shot_line(
         backshot,
         angle,
         power,
-        wind_angle,
         wind_power,
+        wind_angle,
         STEP_SIZE
     ):
         x = position[0]
         y = -(position[1] - MAX_MAP_Y)
-        if min_x <= x <= max_x and min_y <= y <= max_y:
-            image_x = int(round(x - min_x))
-            image_y = int(round(y - min_y))
-            image[image_y, image_x] = (0, 0, 255, 255)
+        position_on_image = (
+            int(round(x - min_x)),
+            int(round(y - min_y))
+        )
+        if previous_position_on_image is not None:
+            cv.line(image, previous_position_on_image, position_on_image, (0, 0, 255, 255), thickness=1)
+        previous_position_on_image = position_on_image
 
 
 def change_direction(direction):
@@ -462,7 +462,6 @@ def determine_wind_direction_factor(wind_direction, cart_position, target_positi
         factor = 0.0
     else:
         factor = 0.25
-    print(wind_direction, factor)
     return factor
 
 
@@ -496,10 +495,13 @@ a = {
 sign_image2 = cv.imread('images/minus.png')
 
 
-def determine_angle(process: GunboundProcess, window):
+def determine_angle(process: GunboundProcess, window, mobile):
     angle = read_angle(window)
     facing_direction = process.read_cart_facing_direction()
-    if facing_direction == CartFacingDirection.Left:
+    if (
+        (mobile == Mobile.Nak and facing_direction == CartFacingDirection.Right) or
+        facing_direction == CartFacingDirection.Left
+    ):
         angle = 90 + (90 - angle)
     elif facing_direction == CartFacingDirection.Right:
         if angle < 0:
@@ -572,6 +574,8 @@ def main():
     window = FindWindow('Softnyx', None)
     process = GunboundProcess(Pymem('GunBound.gme'))
 
+    mobile = Mobile.Boomer
+
     application = QApplication(sys.argv)
     transparent_window = TransparentWindow()
     power_bar_area = (
@@ -619,33 +623,33 @@ def main():
         print('Power: ' + str(power))
         image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
         image[0, 0] = (0, 0, 255, 255)
-        start_position = process.read_cart_position()
+        start_position = process.read_cart_position(mobile)
         target_position = determine_target_position(process, window)
         draw_position(start_position, process, image)
         draw_position(target_position, process, image)
         if power is not None:
             mark_on_power_bar(image, power)
 
-        mobile = Mobile.Turtle
-        x, y = start_position
-        angle = determine_angle(process, window)
-        wind_power = process.read_wind_speed()
-        wind_angle = process.read_wind_direction()
-        x2, y2 = target_position
-        direction = Direction.Left if x > x2 else Direction.Right
-        backshot = False
-        draw_shot_line(
-            process,
-            image,
-            mobile,
-            start_position,
-            direction,
-            backshot,
-            angle,
-            400,
-            wind_angle,
-            wind_power
-        )
+            mobile = Mobile.Boomer
+            x, y = start_position
+            angle = determine_angle(process, window, mobile)
+            wind_power = process.read_wind_speed()
+            wind_angle = process.read_wind_direction()
+            x2, y2 = target_position
+            direction = Direction.Left if x > x2 else Direction.Right
+            backshot = True
+            draw_shot_line(
+                process,
+                image,
+                mobile,
+                start_position,
+                direction,
+                backshot,
+                angle,
+                power,
+                wind_angle,
+                wind_power
+            )
 
         transparent_window.show_image(image)
         cv.waitKey(1000)
