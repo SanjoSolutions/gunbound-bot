@@ -85,8 +85,8 @@ class GunboundProcess:
         cart_angle = self.read_cart_angle()
         if cart_facing_direction == CartFacingDirection.Left:
             cart_angle = (cart_angle + 180) % 360
-        offset_x = 14
-        offset_y = 16
+        offset_x = 15
+        offset_y = 15
         x_offset_angle = cart_angle
         if mobile == Mobile.Nak:
             x_offset_angle += 180
