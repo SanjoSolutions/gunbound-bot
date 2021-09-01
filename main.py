@@ -599,10 +599,11 @@ def main():
 
     while True:
         if window != GetForegroundWindow():
-            transparent_window.hide()
+            client_area_rect = determine_client_area_rect(window)
+            image = create_image_with_size(client_area_rect['width'], client_area_rect['height'])
+            image[0, 0] = (255, 255, 255, 255)
             while window != GetForegroundWindow():
                 sleep(1 / 60)
-            transparent_window.show()
 
         client_area_rect = determine_client_area_rect(window)
         transparent_window.setGeometry(
@@ -651,7 +652,7 @@ def main():
                 wind_power
             )
 
-        image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
+        image = create_image_with_size(client_area_rect['width'], client_area_rect['height'])
         draw_position(source_position, process, image)
         draw_position(target_position, process, image)
         if power is not None:
@@ -680,6 +681,11 @@ def main():
 
 def have_parameters_changed(parameters, previous_parameters):
     return parameters != previous_parameters
+
+
+def create_image_with_size(width, height):
+    image = np.full((height, width, 4), (0, 0, 0, 0), dtype=np.uint8)
+    return image
 
 
 if __name__ == '__main__':
