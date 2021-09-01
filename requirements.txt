@@ -1,0 +1,7 @@
+pywin32==225
+opencv-python
+pymem
+numpy
+pillow
+PyQt5
+mss
