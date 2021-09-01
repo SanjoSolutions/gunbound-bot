@@ -61,6 +61,10 @@ class GunboundProcess:
 
         return a
 
+    def read_mobile_id(self):
+        mobile_id = self.process.read_bytes(self.process.base_address + 0x497368, 1)[0]
+        return mobile_id
+
     def read_cart_angle(self):
         cart_angle = self.process.read_int(self.process.base_address + 0x482A60)
         return cart_angle
@@ -174,7 +178,7 @@ def calculate_power(angle, from_position, to_position):
     return (angle_cart - 90) / -distance / 6.557377049
 
 
-class Mobile:
+class Mobile(IntEnum):
     Armor = 0
     Mage = 1
     Nak = 2
@@ -188,11 +192,12 @@ class Mobile:
     Ice = 10
     Turtle = 11
     Grub = 12
-    AdukaKnight = 13
-    JFrogDragon = 14
-    Kalsiddon = 15
-    Slots = 16
-    Aid = 17
+    Aduka = 13
+    Knight = 13
+    Kalsiddon = 14
+    JFrog = 15
+    Dragon = 15
+    Random = 255
 
 
 class Direction(IntEnum):
@@ -607,7 +612,9 @@ def main():
             client_area_rect['height']
         )
 
-        mobile = Mobile.Turtle
+        mobile = Mobile(process.read_mobile_id())
+        if mobile == Mobile.Random:
+            raise Exception('Please set mobile manually.')
         source_position = process.read_cart_position(mobile)
         source_x, source_y = source_position
         angle = determine_angle(process, window, mobile)
