@@ -7,7 +7,7 @@ import numpy as np
 from PyQt5.QtWidgets import QApplication
 from mss import mss
 from pymem import Pymem
-from win32gui import GetClientRect, ClientToScreen, FindWindow, GetCursorPos
+from win32gui import GetClientRect, ClientToScreen, FindWindow, GetCursorPos, GetForegroundWindow
 import cv2 as cv
 
 from transparent_window import TransparentWindow
@@ -589,6 +589,12 @@ def main():
     transparent_window.show()
 
     while True:
+        if window != GetForegroundWindow():
+            transparent_window.hide()
+            while window != GetForegroundWindow():
+                sleep(1 / 60)
+            transparent_window.show()
+
         client_area_rect = determine_client_area_rect(window)
         transparent_window.setGeometry(
             client_area_rect['left'],
