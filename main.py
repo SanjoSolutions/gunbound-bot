@@ -59,8 +59,6 @@ class GunboundProcess:
             a -= cart_angle2
         a %= 360
 
-        print(cart_angle, cart_angle2, a)
-
         return a
 
     def read_cart_angle(self):
@@ -95,7 +93,6 @@ class GunboundProcess:
         x_offset_angle = radians(x_offset_angle)
         angle_delta = -90 if cart_facing_direction == CartFacingDirection.Left else 90
         y_offset_angle = radians(cart_angle + angle_delta)
-        print(cart_angle, cart_angle + angle_delta)
         return (
             int(round(
                 x +
@@ -604,7 +601,6 @@ def main():
         source_position = process.read_cart_position(mobile)
         source_x, source_y = source_position
         angle = determine_angle(process, window, mobile)
-        print('Angle: ' + str(angle))
         wind_power = process.read_wind_speed()
         wind_angle = process.read_wind_direction()
         target_x, target_y = determine_target_position(process, window)
@@ -618,7 +614,6 @@ def main():
 
         power = determine_power(mobile, source_position, target_position, angle, direction, backshot, wind_angle,
                                 wind_power)
-        print('Power: ' + str(power))
         image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
         image[0, 0] = (0, 0, 255, 255)
         start_position = process.read_cart_position(mobile)
