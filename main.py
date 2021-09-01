@@ -257,19 +257,17 @@ g_table2 = (
 DEGTORAD = 0.0174532925199433
 
 
-def determine_power(process: GunboundProcess, window):
-    mobile = Mobile.Boomer
-    source_position = process.read_cart_position(mobile)
-    source_x, source_y = source_position
-    angle = determine_angle(process, window, mobile)
-    print('Angle: ' + str(angle))
-    wind_power = process.read_wind_speed()
-    wind_angle = process.read_wind_direction()
-    target_x, target_y = determine_target_position(process, window)
-    target_y = MAP_HEIGHT - target_y
-    direction = Direction.Left if source_x > target_x else Direction.Right
-    backshot = True
-
+def determine_power(
+    mobile,
+    source_position,
+    target_position,
+    angle,
+    direction,
+    backshot,
+    wind_angle,
+    wind_power
+):
+    target_x, target_y = target_position
     minimum_distance = 9999
     power_to_shoot_with = None
     STEP_SIZE = 0.05
@@ -281,12 +279,12 @@ def determine_power(process: GunboundProcess, window):
         for position in generate_coordinates(
             mobile,
             source_position,
+            angle,
             direction,
             backshot,
-            angle,
-            power,
-            wind_power,
             wind_angle,
+            wind_power,
+            power,
             STEP_SIZE
         ):
             x, y = position
@@ -310,7 +308,17 @@ def determine_power(process: GunboundProcess, window):
     return power_to_shoot_with
 
 
-def generate_coordinates(mobile, start_position, direction, backshot, angle, power, wind_power, wind_angle, step_size):
+def generate_coordinates(
+    mobile,
+    source_position,
+    angle,
+    direction,
+    backshot,
+    wind_angle,
+    wind_power,
+    power,
+    step_size
+):
     # compute horizontal/wind
     x_v2 = int(cos(wind_angle * DEGTORAD) * wind_power) * g_table2[mobile]
 
@@ -326,8 +334,8 @@ def generate_coordinates(mobile, start_position, direction, backshot, angle, pow
     temp_x_v = x_v * power
     temp_y_v = y_v * power
 
-    xxx = start_position[0]
-    delta_yyy = MAX_MAP_Y - start_position[1]
+    xxx = source_position[0]
+    delta_yyy = MAX_MAP_Y - source_position[1]
 
     # if direction == Direction.Left:
     #     temp_x_v *= -1
@@ -391,23 +399,12 @@ def draw_shot_line(
     )
     min_x = visible_map_area[0]
     min_y = visible_map_area[1]
-    max_x = min_x + visible_map_area[2] - 1
-    max_y = min_y + visible_map_area[3] - 1
 
     STEP_SIZE = 0.05
 
     previous_position_on_image = None
-    for position in generate_coordinates(
-        mobile,
-        start_position,
-        direction,
-        backshot,
-        angle,
-        power,
-        wind_power,
-        wind_angle,
-        STEP_SIZE
-    ):
+    for position in generate_coordinates(mobile, start_position, angle, direction, backshot, wind_angle, wind_power,
+                                         power, STEP_SIZE):
         x = position[0]
         y = -(position[1] - MAX_MAP_Y)
         position_on_image = (
@@ -563,12 +560,9 @@ def make_screenshot(window, area=None):
     return screenshot
 
 
-
 def main():
     window = FindWindow('Softnyx', None)
     process = GunboundProcess(Pymem('GunBound.gme'))
-
-    mobile = Mobile.Boomer
 
     application = QApplication(sys.argv)
     transparent_window = TransparentWindow()
@@ -609,11 +603,24 @@ def main():
             client_area_rect['height']
         )
 
-        # angle = read_angle(window)
-        # from_position = gunbound.read_cart_position()
-        # to_position = determine_target_position(gunbound, window)
-        # power = calculate_power(angle, from_position, to_position)
-        power = determine_power(process, window)
+        mobile = Mobile.Turtle
+        source_position = process.read_cart_position(mobile)
+        source_x, source_y = source_position
+        angle = determine_angle(process, window, mobile)
+        print('Angle: ' + str(angle))
+        wind_power = process.read_wind_speed()
+        wind_angle = process.read_wind_direction()
+        target_x, target_y = determine_target_position(process, window)
+        target_y = MAP_HEIGHT - target_y
+        target_position = (target_x, target_y)
+        direction = Direction.Left if source_x > target_x else Direction.Right
+        backshot = (
+            (direction == Direction.Left and (0 <= angle < 90 or 270 < angle <= 360)) or
+            (direction == Direction.Right and 90 < angle < 270)
+        )
+
+        power = determine_power(mobile, source_position, target_position, angle, direction, backshot, wind_angle,
+                                wind_power)
         print('Power: ' + str(power))
         image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
         image[0, 0] = (0, 0, 255, 255)
@@ -623,20 +630,11 @@ def main():
         draw_position(target_position, process, image)
         if power is not None:
             mark_on_power_bar(image, power)
-
-            mobile = Mobile.Boomer
-            x, y = start_position
-            angle = determine_angle(process, window, mobile)
-            wind_power = process.read_wind_speed()
-            wind_angle = process.read_wind_direction()
-            x2, y2 = target_position
-            direction = Direction.Left if x > x2 else Direction.Right
-            backshot = True
             draw_shot_line(
                 process,
                 image,
                 mobile,
-                start_position,
+                source_position,
                 direction,
                 backshot,
                 angle,
