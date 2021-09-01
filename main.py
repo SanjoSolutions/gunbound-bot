@@ -43,14 +43,14 @@ class GunboundProcess:
         wind_direction = self.process.read_ushort(address)
         return wind_direction
 
-    def read_angle(self):
+    def read_angle(self, index):
         b = self.process.read_uint(0x8F4A00 + 0x20)
         address = b + 0x19EC
         cart_angle = self.process.read_int(address)
 
-        cart_angle2 = self.read_cart_angle()
+        cart_angle2 = self.read_cart_angle(index)
 
-        cart_facing_direction = self.read_cart_facing_direction()
+        cart_facing_direction = self.read_cart_facing_direction(index)
 
         a = cart_angle
         if cart_facing_direction == CartFacingDirection.Left:
@@ -61,21 +61,32 @@ class GunboundProcess:
 
         return a
 
+    def read_player_index(self):
+        address = self.process.base_address + 0x49747C
+        player_index = self.process.read_bytes(address, 1)[0]
+        return player_index
+
     def read_mobile_id(self):
         mobile_id = self.process.read_bytes(self.process.base_address + 0x497368, 1)[0]
         return mobile_id
 
-    def read_cart_angle(self):
-        cart_angle = self.process.read_int(self.process.base_address + 0x482A60)
+    def read_cart_angle(self, index):
+        address = self._determine_player_address(index)
+        cart_angle = self.process.read_int(address + 0x8)
         return cart_angle
 
-    def read_cart_facing_direction(self):
+    def _determine_player_address(self, index):
+        address = self.process.base_address + 0x482A58 + index * 0x18
+        return address
+
+    def read_cart_facing_direction(self, index):
+        address = self._determine_player_address(index)
         cart_facing_direction = CartFacingDirection(
-            self.process.read_bytes(self.process.base_address + 0x482A64, 1)[0]
+            self.process.read_bytes(address + 0xC, 1)[0]
         )
         return cart_facing_direction
 
-    def read_cart_position(self, mobile):
+    def read_cart_position(self, mobile, index):
         # # a = self.process.read_uint(0x8701CC)
         # # b = self.process.read_uint(a + 0x77138)
         # c = self.process.read_uint(b + 0x4)
@@ -83,10 +94,11 @@ class GunboundProcess:
         # e = self.process.read_uint(d + 0x10)
         # cart_position = self.process.read_uint(e + 0x56C)
         # return cart_position
-        x = self.process.read_ushort(self.process.base_address + 0x482A58)
-        y = self.process.read_ushort(self.process.base_address + 0x482A5C)
-        cart_facing_direction = self.read_cart_facing_direction()
-        cart_angle = self.read_cart_angle()
+        address = self._determine_player_address(index)
+        x = self.process.read_ushort(address + 0x0)
+        y = self.process.read_ushort(address + 0x4)
+        cart_facing_direction = self.read_cart_facing_direction(index)
+        cart_angle = self.read_cart_angle(index)
         if cart_facing_direction == CartFacingDirection.Left:
             cart_angle = (cart_angle + 180) % 360
         offset_x = 15
@@ -122,10 +134,10 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
 
-def calculate_angle_2_4_power(process: GunboundProcess, window):
+def calculate_angle_2_4_power(process: GunboundProcess, window, index):
     mobile = Mobile.Turtle
     target_position = determine_target_position(process, window)
-    cart_position = process.read_cart_position(mobile)
+    cart_position = process.read_cart_position(mobile, index)
     distance = abs(target_position[0] - cart_position[0])
     distance_in_parts = convert_distance_to_distance_in_parts(distance)
     angle = 90 - distance_in_parts
@@ -489,9 +501,9 @@ a = {
 sign_image2 = cv.imread('images/minus.png')
 
 
-def determine_angle(process: GunboundProcess, window, mobile):
+def determine_angle(process: GunboundProcess, window, mobile, index):
     angle = read_angle(window)
-    facing_direction = process.read_cart_facing_direction()
+    facing_direction = process.read_cart_facing_direction(index)
     if (
         (mobile == Mobile.Nak and facing_direction == CartFacingDirection.Right) or
         facing_direction == CartFacingDirection.Left
@@ -613,12 +625,14 @@ def main():
             client_area_rect['height']
         )
 
+        player_index = process.read_player_index()
         mobile = Mobile(process.read_mobile_id())
+        # mobile = Mobile.Grub
         if mobile == Mobile.Random:
             raise Exception('Please set mobile manually.')
-        source_position = process.read_cart_position(mobile)
+        source_position = process.read_cart_position(mobile, player_index)
         source_x, source_y = source_position
-        angle = determine_angle(process, window, mobile)
+        angle = determine_angle(process, window, mobile, player_index)
         wind_power = process.read_wind_speed()
         wind_angle = process.read_wind_direction()
         target_x, target_y = determine_target_position(process, window)
