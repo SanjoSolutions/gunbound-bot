@@ -22,6 +22,9 @@ sys.excepthook = log_uncaught_exceptions
 class TransparentWindow(QWidget):
     def __init__(self):
         super().__init__()
+
+        self.setAttribute(Qt.WA_TransparentForMouseEvents)
+
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.setWindowFlag(Qt.WindowStaysOnTopHint)
 

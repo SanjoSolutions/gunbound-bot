@@ -371,8 +371,8 @@ def draw_position(position, process, image):
 
     cv.circle(image, (x, y), 18, (0, 0, 255, 255), thickness=1)
     # cv.circle(image, (x, y), 1, (0, 0, 255, 255), thickness=1)
-    # if 0 <= x < image.shape[1] and 0 <= y < image.shape[0]:
-    #     image[y, x] = (0, 255, 0, 255)
+    if 0 <= x < image.shape[1] and 0 <= y < image.shape[0]:
+        image[y, x] = (0, 255, 0, 255)
 
 
 def draw_shot_line(
@@ -615,7 +615,6 @@ def main():
         power = determine_power(mobile, source_position, target_position, angle, direction, backshot, wind_angle,
                                 wind_power)
         image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
-        image[0, 0] = (0, 0, 255, 255)
         start_position = process.read_cart_position(mobile)
         target_position = determine_target_position(process, window)
         draw_position(start_position, process, image)
