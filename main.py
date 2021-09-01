@@ -621,9 +621,7 @@ def main():
         power = determine_power(mobile, source_position, target_position, angle, direction, backshot, wind_angle,
                                 wind_power)
         image = np.full((client_area_rect['height'], client_area_rect['width'], 4), (0, 0, 0, 0), dtype=np.uint8)
-        start_position = process.read_cart_position(mobile)
-        target_position = determine_target_position(process, window)
-        draw_position(start_position, process, image)
+        draw_position(source_position, process, image)
         draw_position(target_position, process, image)
         if power is not None:
             mark_on_power_bar(image, power)
