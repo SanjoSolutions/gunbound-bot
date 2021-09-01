@@ -507,14 +507,12 @@ def read_angle(window):
         8,
         5
     ))
-    cv.imwrite('sign_image.png', sign_image)
     digit_1_image = make_screenshot_cv(window, (
         226,
         531,
         13,
         13
     ))
-    cv.imwrite('digit_1_image.png', digit_1_image)
     angle = 0
     for digit, image in a.items():
         if (image == digit_1_image).all():
@@ -527,7 +525,6 @@ def read_angle(window):
         13,
         13
     ))
-    cv.imwrite('digit_2_image.png', digit_2_image)
     for digit, image in a.items():
         if (image == digit_2_image).all():
             angle += digit
