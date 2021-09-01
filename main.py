@@ -265,7 +265,7 @@ def determine_power(
     wind_power
 ):
     target_x, target_y = target_position
-    target_y = MAP_HEIGHT - target_y
+    target_y = MAX_MAP_Y - target_y
     minimum_distance = 9999
     power_to_shoot_with = None
     STEP_SIZE = 0.05
@@ -292,7 +292,7 @@ def determine_power(
                     y <= target_y <= last_y
                 )
             ):
-                average_x = int(round((last_x + x) / 2))
+                average_x = (last_x + x) / 2.0
                 distance = abs(target_x - average_x)
 
                 if distance < minimum_distance:
