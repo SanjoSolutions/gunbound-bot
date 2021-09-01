@@ -259,23 +259,20 @@ DEGTORAD = 0.0174532925199433
 
 def determine_power(process: GunboundProcess, window):
     mobile = Mobile.Boomer
-    start_position = process.read_cart_position(mobile)
-    x, y = start_position
+    source_position = process.read_cart_position(mobile)
+    source_x, source_y = source_position
     angle = determine_angle(process, window, mobile)
     print('Angle: ' + str(angle))
     wind_power = process.read_wind_speed()
     wind_angle = process.read_wind_direction()
-    x2, y2 = determine_target_position(process, window)
-    # x2 = 728.0
-    # y2 = 999.0
-    direction = Direction.Left if x > x2 else Direction.Right
+    target_x, target_y = determine_target_position(process, window)
+    target_y = MAP_HEIGHT - target_y
+    direction = Direction.Left if source_x > target_x else Direction.Right
     backshot = True
 
-    old_distance = 9999
-    hit_power = None
+    minimum_distance = 9999
+    power_to_shoot_with = None
     STEP_SIZE = 0.05
-
-    delta_y2 = MAP_HEIGHT - y2
 
     for power in range(400 + 1):
         last_x = None
@@ -283,7 +280,7 @@ def determine_power(process: GunboundProcess, window):
 
         for position in generate_coordinates(
             mobile,
-            start_position,
+            source_position,
             direction,
             backshot,
             angle,
@@ -292,28 +289,25 @@ def determine_power(process: GunboundProcess, window):
             wind_angle,
             STEP_SIZE
         ):
-            xxx, delta_yyy = position
+            x, y = position
             if (
                 last_x is not None and last_y is not None and (
-                    (last_y <= delta_y2 and delta_yyy >= delta_y2) or
-                    (last_y >= delta_y2 and delta_yyy <= delta_y2)
+                    last_y <= target_y <= y or
+                    y <= target_y <= last_y
                 )
             ):
-                x22 = int(round((last_x + xxx) / 2))
-                # print(last_y, delta_yyy, delta_y2, last_x, xxx, x22)
-                distance = abs(x2 - x22)
+                average_x = int(round((last_x + x) / 2))
+                distance = abs(target_x - average_x)
 
-                if distance < old_distance:
-                    old_distance = distance
-                    hit_power = power
+                if distance < minimum_distance:
+                    minimum_distance = distance
+                    power_to_shoot_with = power
                     break
 
-            last_x = xxx
-            last_y = delta_yyy
+            last_x = x
+            last_y = y
 
-    print('old_distance: ', old_distance)
-
-    return hit_power
+    return power_to_shoot_with
 
 
 def generate_coordinates(mobile, start_position, direction, backshot, angle, power, wind_power, wind_angle, step_size):
