@@ -380,7 +380,7 @@ def generate_coordinates(
             temp_y_v += y_v2 * step_size
 
 
-def draw_position(position, process, image):
+def draw_position(position, process, image, mobile_angle=None, cart_facing_direction=None):
     scx, scy = process.read_screen_center_position()
     visible_map_area = (
         scx - SCREEN_WIDTH // 2,
@@ -394,8 +394,34 @@ def draw_position(position, process, image):
     x = position[0] - min_x
     y = position[1] - min_y
 
-    cv.circle(image, (x, y), 17, (0, 0, 255, 255), thickness=1)
+    RADIUS = 17
+
+    if mobile_angle is not None:
+        cv.line(
+            image,
+            (x, y),
+            (
+                int(round(x + RADIUS * cos(radians(mobile_angle)))),
+                int(round(y + RADIUS * -sin(radians(mobile_angle))))
+            ),
+            (255, 0, 0, 255)
+        )
+        if cart_facing_direction is not None:
+            angle_offset = -90 if cart_facing_direction == CartFacingDirection.Left else 90
+            angle = mobile_angle + angle_offset
+            cv.line(
+                image,
+                (x, y),
+                (
+                    int(round(x + RADIUS * cos(radians(angle)))),
+                    int(round(y + RADIUS * -sin(radians(angle))))
+                ),
+                (255, 0, 0, 255)
+            )
+
+    cv.circle(image, (x, y), RADIUS, (0, 0, 255, 255), thickness=1)
     # cv.circle(image, (x, y), 1, (0, 0, 255, 255), thickness=1)
+
     if 0 <= x < image.shape[1] and 0 <= y < image.shape[0]:
         image[y, x] = (0, 255, 0, 255)
 
@@ -638,9 +664,8 @@ def main():
             activate_slice_mode()
         virtual_key_code = VK_SPACE
         key_pressing.press_key(virtual_key_code)
-        start_time = time()
-        while time() - start_time <= 4 and not should_release_space(power):
-            sleep(1 / 20)
+        while not should_release_space(power):
+            pass
         key_pressing.release_key(virtual_key_code)
 
     def color_to_color_ref(color):
@@ -652,8 +677,8 @@ def main():
     COLOR_3 = color_to_color_ref((192, 16, 0))
 
     def should_release_space(power):
-        DELAY_OFFSET = -7
-        offset = max(0, power + DELAY_OFFSET)
+        delay_offset = 0 # -7 if power < 400 else 0
+        offset = max(0, power + delay_offset)
         pixel = pixel_getter.get_pixel(
             (
                 power_bar_area[0] - 1 + offset,
@@ -816,7 +841,13 @@ def main():
                 draw_parameters['wind_angle'],
                 draw_parameters['wind_power']
             )
-        draw_position(draw_parameters['source_position'], process, image)
+        draw_position(
+            draw_parameters['source_position'],
+            process,
+            image,
+            mobile_angle=determine_mobile_angle(process, player_index),
+            cart_facing_direction=process.read_cart_facing_direction(player_index)
+        )
         draw_position(draw_parameters['target_position'], process, image)
 
         transparent_window.show_image(image)
@@ -835,6 +866,15 @@ def have_parameters_changed(parameters, previous_parameters):
 def create_image_with_size(width, height):
     image = np.full((height, width, 4), (0, 0, 0, 0), dtype=np.uint8)
     return image
+
+
+def determine_mobile_angle(process, player_index):
+    cart_angle = process.read_cart_angle(player_index)
+    cart_facing_direction = process.read_cart_facing_direction(player_index)
+    angle = cart_angle
+    if cart_facing_direction == CartFacingDirection.Left:
+        angle = (angle + 180) % 360
+    return angle
 
 
 if __name__ == '__main__':
