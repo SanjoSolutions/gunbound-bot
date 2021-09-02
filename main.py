@@ -275,9 +275,6 @@ g_table2 = (
 )
 
 
-DEGTORAD = 0.0174532925199433
-
-
 def determine_power(
     mobile,
     source_position,
@@ -342,16 +339,16 @@ def generate_coordinates(
     step_size
 ):
     # compute horizontal/wind
-    x_v2 = int(cos(wind_angle * DEGTORAD) * wind_power) * g_table2[mobile]
+    x_v2 = int(cos(radians(wind_angle)) * wind_power) * g_table2[mobile]
 
     # compute downward/gravity
-    y_v2 = int(sin(wind_angle * DEGTORAD) * wind_power) * g_table2[mobile] - g_table1[mobile]
+    y_v2 = int(sin(radians(wind_angle)) * wind_power) * g_table2[mobile] - g_table1[mobile]
 
     if mobile == Mobile.Nak and backshot and angle <= 70:
         y_v2 *= -8.0
 
-    x_v = cos(angle * DEGTORAD)
-    y_v = sin(angle * DEGTORAD)
+    x_v = cos(radians(angle))
+    y_v = sin(radians(angle))
 
     temp_x_v = x_v * power
     temp_y_v = y_v * power
