@@ -782,7 +782,7 @@ def main():
         mobile = Mobile(process.read_mobile_id())
         # mobile = Mobile.Grub
         if mobile == Mobile.Random:
-            print(
+            raise Exception(
                 'It has been detected that the random mobile has been chosen. ' +
                 'Please set the mobile manually in the code that has been randomly given.'
             )
