@@ -107,7 +107,7 @@ class GunboundProcess:
             cart_angle = (cart_angle + 180) % 360
         OFFSET_X = 0
         OFFSET_Y = -40
-        ROTATED_OFFSET_X = 16
+        ROTATED_OFFSET_X = 16 if cart_facing_direction == CartFacingDirection.Left else 15
         ROTATED_OFFSET_Y = 25
         x_offset_angle = cart_angle
         if mobile == Mobile.Nak:
@@ -400,6 +400,10 @@ def draw_position(position, process, image):
         image[y, x] = (0, 255, 0, 255)
 
 
+BOTTOM_UI_HEIGHT = 84
+MAX_SHOT_LINE_DRAW_Y = SCREEN_HEIGHT - BOTTOM_UI_HEIGHT  # to prevent drawing over the UI at the bottom
+
+
 def draw_shot_line(
     process,
     image,
@@ -424,6 +428,8 @@ def draw_shot_line(
 
     STEP_SIZE = 0.05
 
+    shot_line_drawing = np.zeros((MAX_SHOT_LINE_DRAW_Y, image.shape[1], image.shape[2]))
+
     previous_position_on_image = None
     for position in generate_coordinates(mobile, start_position, angle, direction, backshot, wind_angle, wind_power,
                                          power, STEP_SIZE):
@@ -434,8 +440,16 @@ def draw_shot_line(
             int(round(y - min_y))
         )
         if previous_position_on_image is not None:
-            cv.line(image, previous_position_on_image, position_on_image, (0, 0, 255, 255), thickness=1)
+            cv.line(
+                shot_line_drawing,
+                previous_position_on_image,
+                position_on_image,
+                (0, 0, 255, 255),
+                thickness=1
+            )
         previous_position_on_image = position_on_image
+
+    image[:MAX_SHOT_LINE_DRAW_Y] = shot_line_drawing
 
 
 def change_direction(direction):
@@ -700,7 +714,7 @@ def main():
         if window != GetForegroundWindow():
             client_area_rect = determine_client_area_rect(window)
             image = create_image_with_size(client_area_rect['width'], client_area_rect['height'])
-            image[0, 0] = (255, 255, 255, 255)
+            image[0, 0] = (0, 0, 255, 255)
             transparent_window.show_image(image)
             while window != GetForegroundWindow():
                 sleep(1 / 60)
@@ -758,8 +772,6 @@ def main():
             )
 
         image = create_image_with_size(client_area_rect['width'], client_area_rect['height'])
-        draw_position(source_position, process, image)
-        draw_position(target_position, process, image)
         if power is not None:
             mark_on_power_bar(image, power)
             draw_shot_line(
@@ -774,6 +786,8 @@ def main():
                 wind_angle,
                 wind_power
             )
+        draw_position(source_position, process, image)
+        draw_position(target_position, process, image)
 
         transparent_window.show_image(image)
 
