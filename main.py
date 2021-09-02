@@ -66,7 +66,7 @@ class GunboundProcess:
         return a
 
     def read_player_index(self):
-        address = self.process.base_address + 0x49747C
+        address = self.process.base_address + 0x4F3929
         player_index = self.process.read_bytes(address, 1)[0]
         return player_index
 
@@ -105,8 +105,10 @@ class GunboundProcess:
         cart_angle = self.read_cart_angle(index)
         if cart_facing_direction == CartFacingDirection.Left:
             cart_angle = (cart_angle + 180) % 360
-        offset_x = 15
-        offset_y = 15
+        OFFSET_X = 0
+        OFFSET_Y = -40
+        ROTATED_OFFSET_X = 16
+        ROTATED_OFFSET_Y = 25
         x_offset_angle = cart_angle
         if mobile == Mobile.Nak:
             x_offset_angle += 180
@@ -116,14 +118,15 @@ class GunboundProcess:
         return (
             int(round(
                 x +
-                offset_x * cos(x_offset_angle) +
-                offset_y * cos(y_offset_angle)
+                OFFSET_X +
+                ROTATED_OFFSET_X * cos(x_offset_angle) +
+                ROTATED_OFFSET_Y * cos(y_offset_angle)
             )),
             int(round(
                 y +
-                -50 +
-                -offset_x * sin(x_offset_angle) +
-                -offset_y * sin(y_offset_angle)
+                OFFSET_Y +
+                ROTATED_OFFSET_X * -sin(x_offset_angle) +
+                ROTATED_OFFSET_Y * -sin(y_offset_angle)
             )),
         )
 
@@ -391,7 +394,7 @@ def draw_position(position, process, image):
     x = position[0] - min_x
     y = position[1] - min_y
 
-    cv.circle(image, (x, y), 18, (0, 0, 255, 255), thickness=1)
+    cv.circle(image, (x, y), 17, (0, 0, 255, 255), thickness=1)
     # cv.circle(image, (x, y), 1, (0, 0, 255, 255), thickness=1)
     if 0 <= x < image.shape[1] and 0 <= y < image.shape[0]:
         image[y, x] = (0, 255, 0, 255)
@@ -698,6 +701,7 @@ def main():
             client_area_rect = determine_client_area_rect(window)
             image = create_image_with_size(client_area_rect['width'], client_area_rect['height'])
             image[0, 0] = (255, 255, 255, 255)
+            transparent_window.show_image(image)
             while window != GetForegroundWindow():
                 sleep(1 / 60)
 

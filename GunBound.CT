@@ -4,7 +4,7 @@
     <CheatEntry>
       <ID>22</ID>
       <Description>"No description"</Description>
-      <LastState Value="114 101 97 116 101 46 105 109" RealAddress="02AF6294"/>
+      <LastState Value="0 11 5 140 80 63 156 2" RealAddress="02AF6294"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Array of byte</VariableType>
       <ByteLength>8</ByteLength>
@@ -13,14 +13,13 @@
     <CheatEntry>
       <ID>23</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="028F5960"/>
       <VariableType>Byte</VariableType>
       <Address>028F5960</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>24</ID>
       <Description>"No description"</Description>
-      <LastState Value="24933" RealAddress="02AF6295"/>
+      <LastState Value="1291" RealAddress="02AF6295"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>2 Bytes</VariableType>
       <Address>0x2AF6295</Address>
@@ -28,273 +27,273 @@
     <CheatEntry>
       <ID>25</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00882A58"/>
+      <LastState Value="1234" RealAddress="00882A58"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482A58</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>26</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="00882A5C"/>
+      <LastState Value="1062" RealAddress="00882A5C"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482A5C</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>27</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00882BD8"/>
+      <LastState Value="1234" RealAddress="00882BD8"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482BD8</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>28</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="00882BDC"/>
+      <LastState Value="1062" RealAddress="00882BDC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482BDC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>29</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00882D58"/>
+      <LastState Value="1234" RealAddress="00882D58"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482D58</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>30</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="00882D5C"/>
+      <LastState Value="1062" RealAddress="00882D5C"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482D5C</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>31</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00882ED8"/>
+      <LastState Value="1234" RealAddress="00882ED8"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482ED8</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>32</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="00882EDC"/>
+      <LastState Value="1062" RealAddress="00882EDC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482EDC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>33</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00883058"/>
+      <LastState Value="1234" RealAddress="00883058"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483058</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>34</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="0088305C"/>
+      <LastState Value="1062" RealAddress="0088305C"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+48305C</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>35</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="008831D8"/>
+      <LastState Value="1234" RealAddress="008831D8"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4831D8</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>36</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="008831DC"/>
+      <LastState Value="1062" RealAddress="008831DC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4831DC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>37</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00883358"/>
+      <LastState Value="1234" RealAddress="00883358"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483358</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>38</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="0088335C"/>
+      <LastState Value="1062" RealAddress="0088335C"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+48335C</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>39</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="008834D8"/>
+      <LastState Value="1234" RealAddress="008834D8"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4834D8</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>40</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="008834DC"/>
+      <LastState Value="1062" RealAddress="008834DC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4834DC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>41</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00883658"/>
+      <LastState Value="1234" RealAddress="00883658"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483658</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>42</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="0088365C"/>
+      <LastState Value="1062" RealAddress="0088365C"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+48365C</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>43</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="008837D8"/>
+      <LastState Value="1234" RealAddress="008837D8"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4837D8</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>44</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="008837DC"/>
+      <LastState Value="1062" RealAddress="008837DC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4837DC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>45</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00883958"/>
+      <LastState Value="1234" RealAddress="00883958"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483958</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>46</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="0088395C"/>
+      <LastState Value="1062" RealAddress="0088395C"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+48395C</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>47</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00883AD8"/>
+      <LastState Value="1234" RealAddress="00883AD8"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483AD8</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>48</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="00883ADC"/>
+      <LastState Value="1062" RealAddress="00883ADC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483ADC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>49</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00883C58"/>
+      <LastState Value="1234" RealAddress="00883C58"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483C58</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>50</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="00883C5C"/>
+      <LastState Value="1062" RealAddress="00883C5C"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483C5C</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>51</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00883DD8"/>
+      <LastState Value="1234" RealAddress="00883DD8"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483DD8</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>52</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="00883DDC"/>
+      <LastState Value="1062" RealAddress="00883DDC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483DDC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>53</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="00883F58"/>
+      <LastState Value="1234" RealAddress="00883F58"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483F58</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>54</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="00883F5C"/>
+      <LastState Value="1062" RealAddress="00883F5C"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483F5C</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>55</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="008840D8"/>
+      <LastState Value="1234" RealAddress="008840D8"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4840D8</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>56</ID>
       <Description>"No description"</Description>
-      <LastState Value="612" RealAddress="008840DC"/>
+      <LastState Value="1062" RealAddress="008840DC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4840DC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>57</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="008E98D4"/>
+      <LastState Value="1234" RealAddress="008E98D4"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4E98D4</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>58</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="008E98DC"/>
+      <LastState Value="1234" RealAddress="008E98DC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4E98DC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>59</ID>
       <Description>"No description"</Description>
-      <LastState Value="858" RealAddress="008E98E4"/>
+      <LastState Value="1234" RealAddress="008E98E4"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4E98E4</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>60</ID>
       <Description>"No description"</Description>
-      <LastState Value="952" RealAddress="00882A70"/>
+      <LastState Value="573" RealAddress="00882A70"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482A70</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>61</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="045405AC"/>
+      <LastState Value="47128" RealAddress="045405AC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>045405AC</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>62</ID>
       <Description>"No description"</Description>
-      <LastState Value="33447" RealAddress="10431B24"/>
+      <LastState Value="38398" RealAddress="10431B24"/>
       <VariableType>2 Bytes</VariableType>
       <Address>10431B24</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>63</ID>
       <Description>"No description"</Description>
-      <LastState Value="16" RealAddress="0089BE6C"/>
+      <LastState Value="23" RealAddress="0089BE6C"/>
       <VariableType>Byte</VariableType>
       <Address>GunBound.gme+49BE6C</Address>
     </CheatEntry>
@@ -336,112 +335,112 @@
     <CheatEntry>
       <ID>70</ID>
       <Description>"1. cart angle address"</Description>
-      <LastState Value="0" RealAddress="00882A60"/>
+      <LastState Value="340" RealAddress="00882A60"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482A60</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>71</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00882BE0"/>
+      <LastState Value="340" RealAddress="00882BE0"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482BE0</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>72</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00882D60"/>
+      <LastState Value="340" RealAddress="00882D60"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482D60</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>73</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00882EE0"/>
+      <LastState Value="340" RealAddress="00882EE0"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+482EE0</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>74</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00883060"/>
+      <LastState Value="340" RealAddress="00883060"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483060</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>75</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="008831E0"/>
+      <LastState Value="340" RealAddress="008831E0"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4831E0</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>76</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00883360"/>
+      <LastState Value="340" RealAddress="00883360"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483360</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>77</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="008834E0"/>
+      <LastState Value="340" RealAddress="008834E0"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4834E0</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>78</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00883660"/>
+      <LastState Value="340" RealAddress="00883660"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483660</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>79</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="008837E0"/>
+      <LastState Value="340" RealAddress="008837E0"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4837E0</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>80</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00883960"/>
+      <LastState Value="340" RealAddress="00883960"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483960</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>81</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00883AE0"/>
+      <LastState Value="340" RealAddress="00883AE0"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483AE0</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>82</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00883C60"/>
+      <LastState Value="340" RealAddress="00883C60"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483C60</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>83</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00883DE0"/>
+      <LastState Value="340" RealAddress="00883DE0"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483DE0</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>84</ID>
       <Description>"No description"</Description>
-      <LastState Value="0" RealAddress="00883F60"/>
+      <LastState Value="340" RealAddress="00883F60"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+483F60</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>85</ID>
       <Description>"last cart angle address"</Description>
-      <LastState Value="0" RealAddress="008840E0"/>
+      <LastState Value="340" RealAddress="008840E0"/>
       <VariableType>2 Bytes</VariableType>
       <Address>GunBound.gme+4840E0</Address>
     </CheatEntry>
@@ -455,7 +454,6 @@
     <CheatEntry>
       <ID>87</ID>
       <Description>"changes with angle change of cart (1.)"</Description>
-      <LastState Value="43407728" RealAddress="02965958"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>0x2965958</Address>
@@ -463,7 +461,6 @@
     <CheatEntry>
       <ID>90</ID>
       <Description>"No description"</Description>
-      <LastState Value="112" RealAddress="02965958"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Byte</VariableType>
       <Address>0x2965958</Address>
@@ -471,7 +468,6 @@
     <CheatEntry>
       <ID>91</ID>
       <Description>"No description"</Description>
-      <LastState Value="89" RealAddress="02965959"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Byte</VariableType>
       <Address>0x2965959</Address>
@@ -479,7 +475,6 @@
     <CheatEntry>
       <ID>88</ID>
       <Description>"No description"</Description>
-      <LastState Value="31793" RealAddress="0296595C"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>0x296595C</Address>
@@ -487,7 +482,6 @@
     <CheatEntry>
       <ID>92</ID>
       <Description>"No description"</Description>
-      <LastState Value="49" RealAddress="0296595C"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Byte</VariableType>
       <Address>0x296595C</Address>
@@ -495,7 +489,6 @@
     <CheatEntry>
       <ID>93</ID>
       <Description>"No description"</Description>
-      <LastState Value="124" RealAddress="0296595D"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Byte</VariableType>
       <Address>0x296595D</Address>
@@ -503,7 +496,6 @@
     <CheatEntry>
       <ID>89</ID>
       <Description>"changes with angle change of cart (last)"</Description>
-      <LastState Value="1" RealAddress="02965960"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>0x2965960</Address>
@@ -511,7 +503,6 @@
     <CheatEntry>
       <ID>94</ID>
       <Description>"changes with angle change of cart (last)"</Description>
-      <LastState Value="1" RealAddress="02965960"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>2 Bytes</VariableType>
       <Address>0x2965960</Address>
@@ -519,7 +510,6 @@
     <CheatEntry>
       <ID>95</ID>
       <Description>"changes with angle change of cart (last)"</Description>
-      <LastState Value="1" RealAddress="02965960"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Byte</VariableType>
       <Address>0x2965960</Address>
@@ -527,7 +517,6 @@
     <CheatEntry>
       <ID>96</ID>
       <Description>"changes with angle change of cart (last)"</Description>
-      <LastState Value="0" RealAddress="02965961"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Byte</VariableType>
       <Address>0x2965961</Address>
@@ -535,7 +524,7 @@
     <CheatEntry>
       <ID>97</ID>
       <Description>"y"</Description>
-      <LastState Value="612" RealAddress="00882A5C"/>
+      <LastState Value="1062" RealAddress="00882A5C"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>2 Bytes</VariableType>
       <Address>0x882A5C</Address>
@@ -543,7 +532,7 @@
     <CheatEntry>
       <ID>98</ID>
       <Description>"scy"</Description>
-      <LastState Value="612" RealAddress="008E98D8"/>
+      <LastState Value="1062" RealAddress="008E98D8"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>2 Bytes</VariableType>
       <Address>008E98D8</Address>
@@ -565,7 +554,7 @@
     <CheatEntry>
       <ID>101</ID>
       <Description>"team id (left = 0; right = 1)"</Description>
-      <LastState Value="1" RealAddress="0088D67C"/>
+      <LastState Value="0" RealAddress="0088D67C"/>
       <VariableType>Byte</VariableType>
       <Address>GunBound.gme+48D67C</Address>
     </CheatEntry>
@@ -577,100 +566,16 @@
       <Address>GunBound.gme+49737B</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>103</ID>
-      <Description>"player index (1. address)"</Description>
-      <LastState Value="1" RealAddress="0089747C"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+49747C</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>104</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="00897494"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+497494</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>105</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="008976F0"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+4976F0</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>106</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="008976F8"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+4976F8</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>107</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="00897708"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+497708</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>108</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="0089770C"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+49770C</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>109</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="00897728"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+497728</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>110</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="00897734"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+497734</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>111</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="00897E78"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+497E78</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>112</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="00897E7C"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+497E7C</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>113</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="00897EB4"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+497EB4</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>114</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="008983C4"/>
-      <VariableType>Byte</VariableType>
-      <Address>GunBound.gme+4983C4</Address>
-    </CheatEntry>
-    <CheatEntry>
       <ID>115</ID>
-      <Description>"No description"</Description>
-      <LastState Value="1" RealAddress="008F3244"/>
+      <Description>"player index (1. address)"</Description>
+      <LastState Value="0" RealAddress="008F3244"/>
       <VariableType>Byte</VariableType>
       <Address>GunBound.gme+4F3244</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>116</ID>
       <Description>"player index (last address)"</Description>
-      <LastState Value="1" RealAddress="008F3929"/>
+      <LastState Value="0" RealAddress="008F3929"/>
       <VariableType>Byte</VariableType>
       <Address>GunBound.gme+4F3929</Address>
     </CheatEntry>
