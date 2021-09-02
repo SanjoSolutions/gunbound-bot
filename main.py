@@ -523,7 +523,7 @@ sign_image2 = cv.imread('images/minus.png')
 slice_mode_image = cv.imread('images/slice_mode.png')
 
 
-def determine_angle(process: GunboundProcess, window, mobile, index):
+def determine_angle(process: GunboundProcess, window, mobile, index, backshot):
     angle = read_angle(window)
     facing_direction = process.read_cart_facing_direction(index)
     if (
@@ -532,6 +532,10 @@ def determine_angle(process: GunboundProcess, window, mobile, index):
     ):
         angle = 90 + (90 - angle)
     elif facing_direction == CartFacingDirection.Right:
+        if angle < 0:
+            angle = 360 + angle
+    if backshot:
+        angle = 180 - angle
         if angle < 0:
             angle = 360 + angle
     return angle
@@ -604,7 +608,16 @@ class PixelGetter:
         return color
 
 
+backshot = False
+last_shot_at = None
+parameters = None
+shot_parameters = None
+
+
 def main():
+    global parameters
+    global shot_parameters
+
     power = None
     window = FindWindow('Softnyx', None)
     process = GunboundProcess(Pymem('GunBound.gme'))
@@ -612,8 +625,12 @@ def main():
     pixel_getter = PixelGetter(window)
 
     def on_hotkey():
+        global last_shot_at
+        global shot_parameters
         if power is not None:
             print('Shoot')
+            last_shot_at = time()
+            shot_parameters = parameters
             slice_shoot(power)
 
     def slice_shoot(power):
@@ -671,8 +688,17 @@ def main():
             client_area_rect['top'] + 569
         )
 
+    def on_alt_down():
+        global backshot
+        backshot = True
+
+    def on_alt_up():
+        global backshot
+        backshot = False
+
     bindings = [
         [['insert'], on_hotkey, None],
+        [['alt'], on_alt_down, on_alt_up],
     ]
 
     register_hotkeys(bindings)
@@ -737,16 +763,12 @@ def main():
             )
         source_position = process.read_cart_position(mobile, player_index)
         source_x, source_y = source_position
-        angle = determine_angle(process, window, mobile, player_index)
+        angle = determine_angle(process, window, mobile, player_index, backshot)
         wind_power = process.read_wind_speed()
         wind_angle = process.read_wind_direction()
         target_x, target_y = determine_target_position(process, window)
         target_position = (target_x, target_y)
         direction = Direction.Left if source_x > target_x else Direction.Right
-        backshot = (
-            (direction == Direction.Left and (0 <= angle < 90 or 270 < angle <= 360)) or
-            (direction == Direction.Right and 90 < angle < 270)
-        )
 
         parameters = {
             'mobile': mobile,
@@ -759,7 +781,14 @@ def main():
             'wind_power': wind_power
         }
 
-        if have_parameters_changed(parameters, previous_parameters):
+        if (
+            (
+                last_shot_at is None or
+                time() - last_shot_at > 15
+            ) and
+            have_parameters_changed(parameters, previous_parameters)
+        ):
+            shot_parameters = None
             power = determine_power(
                 mobile,
                 source_position,
@@ -773,21 +802,23 @@ def main():
 
         image = create_image_with_size(client_area_rect['width'], client_area_rect['height'])
         if power is not None:
+            draw_parameters = shot_parameters if shot_parameters is not None else parameters
+            print('shot_parameters', shot_parameters is not None)
             mark_on_power_bar(image, power)
             draw_shot_line(
                 process,
                 image,
                 mobile,
-                source_position,
-                direction,
-                backshot,
-                angle,
+                draw_parameters['source_position'],
+                draw_parameters['direction'],
+                draw_parameters['backshot'],
+                draw_parameters['angle'],
                 power,
-                wind_angle,
-                wind_power
+                draw_parameters['wind_angle'],
+                draw_parameters['wind_power']
             )
-        draw_position(source_position, process, image)
-        draw_position(target_position, process, image)
+        draw_position(draw_parameters['source_position'], process, image)
+        draw_position(draw_parameters['target_position'], process, image)
 
         transparent_window.show_image(image)
 

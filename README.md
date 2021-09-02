@@ -33,4 +33,5 @@ is indistinguishable from hardware key events for user-mode applications.
 
 ### Hotkeys
 
-__Insert:__ Automatically shoot to the current target position.
+* __Insert:__ Automatically shoot to the current target position.
+* __Alt:__: Hold for backshot.
