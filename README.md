@@ -22,7 +22,7 @@ is indistinguishable from hardware key events for user-mode applications.
 2. Extract the files from the downloaded ZIP.
 3. Open a Windows command prompt as administrator
 4. In the Windows command prompt:
-    1. `cd "Interception\Interception\command line installer"`f
+    1. `cd "Interception\Interception\command line installer"`
     2. `install-interception.exe /install`
 5. Reboot.
 
