@@ -35,3 +35,8 @@ is indistinguishable from hardware key events for user-mode applications.
 
 * __Insert:__ Automatically shoot to the current target position.
 * __Alt:__ Hold for backshot.
+
+## Known limitations
+
+* In tag mode the mobile is determined to always be the main one.<br>
+  Workaround: Set the mobile manually in the code and restart the bot.
