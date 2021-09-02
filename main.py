@@ -22,6 +22,10 @@ class CartFacingDirection(IntEnum):
     Right = 1
 
 
+class GameModus(IntEnum):
+    Tag =
+
+
 class GunboundProcess:
     def __init__(self, process):
         self.process = process
@@ -71,7 +75,10 @@ class GunboundProcess:
         return player_index
 
     def read_mobile_id(self):
-        mobile_id = self.process.read_bytes(self.process.base_address + 0x497368, 1)[0]
+        selected_mobile_index = self.read_selected_mobile_index() \
+            if self.is_in_match() and self.read_game_modus() == GameModus.Tag \
+            else 0
+        mobile_id = self.process.read_bytes(self.process.base_address + 0x497368 + selected_mobile_index, 1)[0]
         return mobile_id
 
     def read_cart_angle(self, index):
@@ -211,6 +218,15 @@ class GunboundProcess:
             self.process.read_ushort(self.process.base_address + 0x4E98D4),
             self.process.read_ushort(self.process.base_address + 0x4E98D8),
         )
+
+    def read_selected_mobile_index(self):
+        a = self.process.read_uint(self.process.base_address + 0x004F4A00 + 0x20)
+        return self.process.read_bytes(a + 0x1A1C, 1)[0]
+
+    def read_game_modus(self):
+
+    def is_in_match(self):
+        
 
 
 SCREEN_WIDTH = 800
@@ -855,6 +871,7 @@ def main():
 
         player_index = process.read_player_index()
         mobile = Mobile(process.read_mobile_id())
+        print(mobile)
         # mobile = Mobile.Grub
         if mobile == Mobile.Random:
             raise Exception(
