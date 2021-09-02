@@ -5,3 +5,4 @@ numpy
 pillow
 PyQt5
 mss
+global-hotkeys
