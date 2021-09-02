@@ -782,7 +782,7 @@ def main():
         mobile = Mobile(process.read_mobile_id())
         # mobile = Mobile.Grub
         if mobile == Mobile.Random:
-            raise Exception(
+            print(
                 'It has been detected that the random mobile has been chosen. ' +
                 'Please set the mobile manually in the code that has been randomly given.'
             )
@@ -849,6 +849,7 @@ def main():
             cart_facing_direction=process.read_cart_facing_direction(player_index)
         )
         draw_position(draw_parameters['target_position'], process, image)
+        image[0, 0] = (0, 0, 255, 255)
 
         transparent_window.show_image(image)
 
