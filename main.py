@@ -826,8 +826,8 @@ def main():
             )
 
         image = create_image_with_size(client_area_rect['width'], client_area_rect['height'])
+        draw_parameters = shot_parameters if shot_parameters is not None else parameters
         if power is not None:
-            draw_parameters = shot_parameters if shot_parameters is not None else parameters
             mark_on_power_bar(image, power)
             draw_shot_line(
                 process,
