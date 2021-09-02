@@ -1,16 +1,20 @@
 import sys
 from enum import IntEnum
 from math import cos, sin, sqrt, radians
-from time import sleep
+from time import sleep, time
 
 import numpy as np
+import pyautogui
+from win32con import VK_SPACE
 from PyQt5.QtWidgets import QApplication
 from mss import mss
 from pymem import Pymem
-from win32gui import GetClientRect, ClientToScreen, FindWindow, GetCursorPos, GetForegroundWindow
+from win32gui import GetClientRect, ClientToScreen, FindWindow, GetCursorPos, GetForegroundWindow, GetDC, GetPixel
 import cv2 as cv
 
+from key_pressing import KeyPressing
 from transparent_window import TransparentWindow
+from global_hotkeys import *
 
 
 class CartFacingDirection(IntEnum):
@@ -499,6 +503,7 @@ a = {
     9: cv.imread('images/9.png'),
 }
 sign_image2 = cv.imread('images/minus.png')
+slice_mode_image = cv.imread('images/slice_mode.png')
 
 
 def determine_angle(process: GunboundProcess, window, mobile, index):
@@ -572,9 +577,89 @@ def make_screenshot(window, area=None):
     return screenshot
 
 
+class PixelGetter:
+    def __init__(self, window):
+        self.device_context = GetDC(window)
+
+    def get_pixel(self, position):
+        x, y = position
+        color = GetPixel(self.device_context, x, y)
+        return color
+
+
 def main():
+    power = None
     window = FindWindow('Softnyx', None)
     process = GunboundProcess(Pymem('GunBound.gme'))
+    key_pressing = KeyPressing()
+    pixel_getter = PixelGetter(window)
+
+    def on_hotkey():
+        if power is not None:
+            print('Shoot')
+            slice_shoot(power)
+
+    def slice_shoot(power):
+        if not is_slice_mode_active():
+            activate_slice_mode()
+        virtual_key_code = VK_SPACE
+        key_pressing.press_key(virtual_key_code)
+        start_time = time()
+        while time() - start_time <= 4 and not should_release_space(power):
+            sleep(1 / 20)
+        key_pressing.release_key(virtual_key_code)
+
+    def color_to_color_ref(color):
+        r, g, b = color
+        return (b << 16) | (g << 8) | r
+
+    COLOR_1 = color_to_color_ref((208, 24, 32))
+    COLOR_2 = color_to_color_ref((96, 0, 0))
+    COLOR_3 = color_to_color_ref((192, 16, 0))
+
+    def should_release_space(power):
+        DELAY_OFFSET = -7
+        offset = max(0, power + DELAY_OFFSET)
+        pixel = pixel_getter.get_pixel(
+            (
+                power_bar_area[0] - 1 + offset,
+                power_bar_area[1] + 13
+            )
+        )
+        return (
+            pixel == COLOR_1 or
+            pixel == COLOR_2 or
+            pixel == COLOR_3
+        )
+
+    def is_slice_mode_active():
+        image = make_shoot_mode_image()
+        return (image == slice_mode_image).all()
+
+    def make_shoot_mode_image():
+        return make_screenshot_cv(window, (
+            205,
+            576,
+            31,
+            12
+        ))
+
+    def activate_slice_mode():
+        toggle_shoot_mode()
+
+    def toggle_shoot_mode():
+        client_area_rect = determine_client_area_rect(window)
+        pyautogui.click(
+            client_area_rect['left'] + 218,
+            client_area_rect['top'] + 569
+        )
+
+    bindings = [
+        [['insert'], on_hotkey, None],
+    ]
+
+    register_hotkeys(bindings)
+    start_checking_hotkeys()
 
     application = QApplication(sys.argv)
     transparent_window = TransparentWindow()
@@ -607,7 +692,6 @@ def main():
     transparent_window.show()
 
     previous_parameters = None
-    power = None
 
     while True:
         if window != GetForegroundWindow():
@@ -629,7 +713,10 @@ def main():
         mobile = Mobile(process.read_mobile_id())
         # mobile = Mobile.Grub
         if mobile == Mobile.Random:
-            raise Exception('Please set mobile manually.')
+            raise Exception(
+                'It has been detected that the random mobile has been chosen. ' +
+                'Please set the mobile manually in the code that has been randomly given.'
+            )
         source_position = process.read_cart_position(mobile, player_index)
         source_x, source_y = source_position
         angle = determine_angle(process, window, mobile, player_index)
