@@ -22,7 +22,7 @@ is indistinguishable from hardware key events for user-mode applications.
 2. Extract the files from the downloaded ZIP.
 3. Open a Windows command prompt as administrator
 4. In the Windows command prompt:
-    1. `cd "Interception\Interception\command line installer"`
+    1. `cd "Interception\Interception\command line installer"`f
     2. `install-interception.exe /install`
 5. Reboot.
 
@@ -34,4 +34,4 @@ is indistinguishable from hardware key events for user-mode applications.
 ### Hotkeys
 
 * __Insert:__ Automatically shoot to the current target position.
-* __Alt:__: Hold for backshot.
+* __Alt:__ Hold for backshot.
