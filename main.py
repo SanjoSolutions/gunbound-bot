@@ -454,6 +454,8 @@ def generate_coordinates(
                 speed[1] + acceleration[1] * step_size
             )
 
+            steps_passed += step_size
+
 
 def draw_position(position, process, image, mobile_angle=None, cart_facing_direction=None):
     scx, scy = process.read_screen_center_position()
