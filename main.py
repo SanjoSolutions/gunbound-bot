@@ -362,6 +362,8 @@ def generate_coordinates(
     if mobile == Mobile.Nak and backshot and angle <= 70:
         temp_x_v *= 2
 
+    yield (xxx, delta_yyy)
+
     if delta_yyy >= 0:
         while MIN_MAP_X < xxx < MAX_MAP_X and delta_yyy >= 0:
             # calc projectile x,y coord
