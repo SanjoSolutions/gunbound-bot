@@ -40,3 +40,10 @@ is indistinguishable from hardware key events for user-mode applications.
 
 * In tag mode the mobile is determined to always be the main one.<br>
   Workaround: Set the mobile manually in the code and restart the bot.
+
+## Open improvements
+
+* [ ] Visualization of how the Trico shot 2 rotates along the shot line
+* [ ] Boomer hook shots
+* [ ] Calculation and visualization of the underground part of Nak shot 2
+* [ ] Calculation and visualization of the pop point of the Turtle super shot
