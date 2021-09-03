@@ -47,3 +47,6 @@ is indistinguishable from hardware key events for user-mode applications.
 * [ ] Boomer hook shots
 * [ ] Calculation and visualization of the underground part of Nak shot 2
 * [ ] Calculation and visualization of the pop point of the Turtle super shot
+* [ ] Calculation and visualization of the positions of the projectiles of Big Foot shot 1
+* [ ] Calculation and visualization of the positions of the projectiles of Big Foot shot 2
+* [ ] Calculation and visualization of the positions of the projectiles of Big Foot super shot
