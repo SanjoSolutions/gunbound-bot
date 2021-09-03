@@ -1,6 +1,6 @@
 import sys
 from enum import IntEnum
-from math import cos, sin, sqrt, radians
+from math import cos, sin, sqrt, radians, atan2
 from time import sleep, time
 
 import numpy as np
@@ -440,6 +440,8 @@ def generate_coordinates(
     if mobile == Mobile.Nak and backshot and angle <= 70:
         speed_x *= 2
 
+    hook_angle_change_done = False
+
     yield (x, y)
 
     if y >= 0:
@@ -453,6 +455,14 @@ def generate_coordinates(
                 speed[0] + acceleration[0] * step_size,
                 speed[1] + acceleration[1] * step_size
             )
+
+            current_angle = atan2(speed[1], speed[0])
+            if not hook_angle_change_done and mobile == Mobile.Boomer and current_angle <= radians(34.5):
+                speed = (
+                    speed[0],
+                    power * -sin(radians(180) - current_angle)
+                )
+                hook_angle_change_done = True
 
 
 def draw_position(position, process, image, mobile_angle=None, cart_facing_direction=None):
