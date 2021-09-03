@@ -105,10 +105,86 @@ class GunboundProcess:
         cart_angle = self.read_cart_angle(index)
         if cart_facing_direction == CartFacingDirection.Left:
             cart_angle = (cart_angle + 180) % 360
+        offsets = {
+            Mobile.Armor: {
+                'ROTATED_OFFSET_X': 21 if cart_facing_direction == CartFacingDirection.Left else 20,
+                'ROTATED_OFFSET_Y': 21
+            },
+            Mobile.Mage: {
+                'ROTATED_OFFSET_X': 18 if cart_facing_direction == CartFacingDirection.Left else 19,
+                'ROTATED_OFFSET_Y': 32 if cart_facing_direction == CartFacingDirection.Left else 30
+            },
+            Mobile.Nak: {
+                'ROTATED_OFFSET_X': 25 if cart_facing_direction == CartFacingDirection.Left else 26,
+                'ROTATED_OFFSET_Y': 21
+            },
+            Mobile.Trico: {
+                'ROTATED_OFFSET_X': 20 if cart_facing_direction == CartFacingDirection.Left else 19,
+                'ROTATED_OFFSET_Y': 32
+            },
+            Mobile.BigFoot: {
+                'ROTATED_OFFSET_X': 24 if cart_facing_direction == CartFacingDirection.Left else 23,
+                'ROTATED_OFFSET_Y': 34
+            },
+            Mobile.Boomer: {
+                'ROTATED_OFFSET_X': 12 if cart_facing_direction == CartFacingDirection.Left else 7,
+                'ROTATED_OFFSET_Y': 35 if cart_facing_direction == CartFacingDirection.Left else 36
+            },
+            # TODO: The offsets below might need adjustments
+            Mobile.Raon: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.Lightning: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.JD: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.ASate: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.Ice: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.Turtle: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.Grub: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.Aduka: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.Kalsiddon: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.JFrog: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.Dragon: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            },
+            Mobile.Knight: {
+                'ROTATED_OFFSET_X': 16 if cart_facing_direction == CartFacingDirection.Left else 15,
+                'ROTATED_OFFSET_Y': 25
+            }
+        }
+        mobile_offsets = offsets[mobile]
         OFFSET_X = 0
         OFFSET_Y = -40
-        ROTATED_OFFSET_X = 16 if cart_facing_direction == CartFacingDirection.Left else 15
-        ROTATED_OFFSET_Y = 25
+        ROTATED_OFFSET_X = mobile_offsets['ROTATED_OFFSET_X']
+        ROTATED_OFFSET_Y = mobile_offsets['ROTATED_OFFSET_Y']
         x_offset_angle = cart_angle
         if mobile == Mobile.Nak:
             x_offset_angle += 180
