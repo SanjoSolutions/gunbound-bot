@@ -1,0 +1,6 @@
+00413DA6: mov eax, dword ptr ds:[0x87053C]
+00413DAB: mov ecx, drword ptr ds:[eax*4+0x870140]
+00413DC4: mov ecx, eax
+004D23F3: mov ebx, drword ptr ss:[esp+0x20]
+004E64A3: mov esi, [esp + 0x108]
+004E64BE: add esi, 0x1234

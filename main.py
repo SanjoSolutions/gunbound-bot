@@ -23,16 +23,26 @@ class CartFacingDirection(IntEnum):
 
 
 class GunboundProcess:
-    def __init__(self, process):
+    def __init__(self, process: Pymem):
         self.process = process
 
     def read_wind_speed(self):
+        address = self.determine_wind_speed_address()
+        wind_speed = self.process.read_bytes(address, 1)[0]
+        return wind_speed
+
+    def set_wind_speed(self, wind_speed):
+        wind_speed_bytes = bytes((wind_speed,))
+        self.process.write_bytes(self.process.base_address + 0x49BE6C, wind_speed_bytes, 1)
+        address = self.determine_wind_speed_address()
+        self.process.write_bytes(address, wind_speed_bytes, 1)
+
+    def determine_wind_speed_address(self):
         a = self.process.read_uint(0x87053c)
         b = self.process.read_uint(0x870140 + a * 4)
         # b seems to be the address of some class instance
         address = b + 0x1234
-        wind_speed = self.process.read_bytes(address, 1)[0]
-        return wind_speed
+        return address
 
     def read_wind_direction(self):
         """
@@ -40,12 +50,20 @@ class GunboundProcess:
         Zero degree is at the right side.
         The angle increases counter-clockwise.
         """
+        address = self.determine_wind_direction_address()
+        wind_direction = self.process.read_ushort(address)
+        return wind_direction
+
+    def set_wind_direction(self, wind_direction):
+        address = self.determine_wind_direction_address()
+        self.process.write_ushort(address, wind_direction)
+
+    def determine_wind_direction_address(self):
         a = self.process.read_uint(0x87053c)
         b = self.process.read_uint(0x870140 + a * 4)
         # b seems to be the address of some class instance
         address = b + 0x1234 + 0x1
-        wind_direction = self.process.read_ushort(address)
-        return wind_direction
+        return address
 
     def read_angle(self, index):
         b = self.process.read_uint(0x8F4A00 + 0x20)
@@ -908,6 +926,7 @@ def main():
         wind_angle = process.read_wind_direction()
         target_x, target_y = determine_target_position(process, window)
         target_position = (target_x, target_y)
+        print(target_position)
         direction = Direction.Left if source_x > target_x else Direction.Right
 
         parameters = {
