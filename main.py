@@ -1,6 +1,6 @@
 import sys
 from enum import IntEnum
-from math import cos, sin, sqrt, radians, atan2
+from math import cos, sin, sqrt, radians, atan2, degrees, pi
 from time import sleep, time
 
 import numpy as np
@@ -457,12 +457,41 @@ def generate_coordinates(
             )
 
             current_angle = atan2(speed[1], speed[0])
-            if not hook_angle_change_done and mobile == Mobile.Boomer and current_angle <= radians(34.5):
+            if current_angle < 0:
+                current_angle += 2 * pi
+            A = 159
+            B = 1
+            C = 0.01
+            a = sqrt(speed[0] ** 2 + speed[1] ** 2)
+            if (
+                not hook_angle_change_done and
+                mobile == Mobile.Boomer and
+                can_hook_shoot(direction, wind_angle, wind_power) and
+                # a <= A + B * wind_power - C * power / 400.0 and
+                abs(angle - degrees(current_angle)) >= 16 and
+                (
+                    (direction == Direction.Left and degrees(current_angle) >= 135) or
+                    (direction == Direction.Right and (degrees(current_angle) <= 45 or degrees(current_angle) >= 270))
+                )
+            ):
+                if direction == Direction.Left:
+                    new_angle = 270 - (180 - 90 - degrees(current_angle))
+                elif direction == Direction.Right:
+                    new_angle = 270 + (180 - 90 - degrees(current_angle))
+                additional_angle_offset = wind_power // 7
+                if direction == Direction.Left:
+                    new_angle += additional_angle_offset
+                elif direction == Direction.Right:
+                    new_angle -= additional_angle_offset
                 speed = (
                     speed[0],
-                    power * -sin(radians(180) - current_angle)
+                    power * sin(radians(new_angle))
                 )
                 hook_angle_change_done = True
+
+
+def can_hook_shoot(shooting_direction, wind_direction, wind_speed):
+    return wind_speed >= 2
 
 
 def draw_position(position, process, image, mobile_angle=None, cart_facing_direction=None):
@@ -550,6 +579,7 @@ def draw_shot_line(
             int(round(x - min_x)),
             int(round(y - min_y))
         )
+        cv.circle(shot_line_drawing, position_on_image, 5, (0, 255, 0, 255))
         if previous_position_on_image is not None:
             cv.line(
                 shot_line_drawing,
