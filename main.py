@@ -942,6 +942,7 @@ def main():
         wind_angle = process.read_wind_direction()
         target_x, target_y = determine_target_position(process, window)
         target_position = (target_x, target_y)
+        print(target_position)
         direction = Direction.Left if source_x > target_x else Direction.Right
 
         parameters = {
