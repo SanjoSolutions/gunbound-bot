@@ -308,28 +308,7 @@ MAX_MAP_Y = 1840
 MAP_HEIGHT = MAX_MAP_Y - MIN_MAP_Y
 
 
-g_table1 = (
-    73.5,  # Armor
-    71.5,  # Mage
-    93.0,  # Nak
-    84.0,  # Trico
-    90.0,  # Bigfoot
-    62.5,  # Boomer
-    81.0,  # Raon
-    65.0,  # Lightning
-    62.5,  # JD
-    76.0,  # Asate
-    62.5,  # Ice
-    73.5,  # Turtle
-    61.0,  # Grub
-    65.5,  # Aduka/Knight
-    54.3,  # JFrog/Dragon
-    88.5,  # Kalsiddon
-    1.0,   # Slots
-    1.0    # Aid
-)
-
-g_table2 = (
+projectile_speeds = (
     0.74,   # Armor
     0.78,   # Mage
     0.99,   # Nak
@@ -348,6 +327,28 @@ g_table2 = (
     0.905,  # Kalsiddon
     0.0,    # Slots
     0.0     # Aid
+)
+
+
+gravities = (
+    -73.5,  # Armor
+    -71.5,  # Mage
+    -93.0,  # Nak
+    -84.0,  # Trico
+    -90.0,  # Bigfoot
+    -62.5,  # Boomer
+    -81.0,  # Raon
+    -65.0,  # Lightning
+    -62.5,  # JD
+    -76.0,  # Asate
+    -62.5,  # Ice
+    -73.5,  # Turtle
+    -61.0,  # Grub
+    -65.5,  # Aduka/Knight
+    -54.3,  # JFrog/Dragon
+    -88.5,  # Kalsiddon
+    -1.0,   # Slots
+    -1.0    # Aid
 )
 
 
@@ -414,45 +415,44 @@ def generate_coordinates(
     power,
     step_size
 ):
-    # compute horizontal/wind
-    x_v2 = int(cos(radians(wind_angle)) * wind_power) * g_table2[mobile]
+    projectile_speed = projectile_speeds[mobile]
+    gravity = gravities[mobile]
 
-    # compute downward/gravity
-    y_v2 = int(sin(radians(wind_angle)) * wind_power) * g_table2[mobile] - g_table1[mobile]
+    acceleration_x = int(cos(radians(wind_angle)) * wind_power) * projectile_speed
+    acceleration_y = int(sin(radians(wind_angle)) * wind_power) * projectile_speed + gravity
 
     if mobile == Mobile.Nak and backshot and angle <= 70:
-        y_v2 *= -8.0
+        acceleration_y *= -8.0
 
-    x_v = cos(radians(angle))
-    y_v = sin(radians(angle))
+    acceleration = (acceleration_x, acceleration_y)
 
-    temp_x_v = x_v * power
-    temp_y_v = y_v * power
+    speed_x = power * cos(radians(angle))
+    speed_y = power * sin(radians(angle))
 
-    xxx = source_position[0]
-    delta_yyy = MAX_MAP_Y - source_position[1]
+    speed = (speed_x, speed_y)
+
+    x = source_position[0]
+    y = MAX_MAP_Y - source_position[1]
 
     # if direction == Direction.Left:
     #     temp_x_v *= -1
 
     if mobile == Mobile.Nak and backshot and angle <= 70:
-        temp_x_v *= 2
+        speed_x *= 2
 
-    yield (xxx, delta_yyy)
+    yield (x, y)
 
-    if delta_yyy >= 0:
-        while MIN_MAP_X < xxx < MAX_MAP_X and delta_yyy >= 0:
-            # calc projectile x,y coord
+    if y >= 0:
+        while MIN_MAP_X < x < MAX_MAP_X and y >= 0:
+            x += speed[0] * step_size
+            y += speed[1] * step_size
 
-            xxx += temp_x_v * step_size
-            delta_yyy += temp_y_v * step_size
+            yield (x, y)
 
-            yield (xxx, delta_yyy)
-
-            # calc projectile x,y velocity (+ wind/gravity)
-
-            temp_x_v += x_v2 * step_size
-            temp_y_v += y_v2 * step_size
+            speed = (
+                speed[0] + acceleration[0] * step_size,
+                speed[1] + acceleration[1] * step_size
+            )
 
 
 def draw_position(position, process, image, mobile_angle=None, cart_facing_direction=None):
