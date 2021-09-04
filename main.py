@@ -230,6 +230,22 @@ class GunboundProcess:
             self.process.read_ushort(self.process.base_address + 0x4E98D8),
         )
 
+    def read_current_power(self):
+        a = self.process.read_uint(self.process.base_address + 0x4701CC)
+        b = self.process.read_uint(a + 0x26e04)
+        c = self.process.read_uint(b + 0x254 + 0x4)
+
+        d = c << 2
+
+        h = self.process.read_int(0x8f4a00 + 0x24)
+        f = self.process.read_int(h + ((c >> 3) * 4))
+        i = self.process.read_int(0x8f4a00 + 0x1c)
+        g = self.process.read_uint(i + d)
+
+        e = f ^ g
+
+        return e
+
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -486,7 +502,7 @@ def generate_coordinates(
                 mobile == Mobile.Boomer and
                 can_hook_shoot(direction, wind_angle, wind_power) and
                 # a <= A + B * wind_power - C * power / 400.0 and
-                abs(angle - degrees(current_angle)) >= 16 and
+                abs(angle - degrees(current_angle)) >= 14.75 and
                 (
                     (direction == Direction.Left and degrees(current_angle) >= 135) or
                     (direction == Direction.Right and (degrees(current_angle) <= 45 or degrees(current_angle) >= 270))
@@ -926,7 +942,6 @@ def main():
         wind_angle = process.read_wind_direction()
         target_x, target_y = determine_target_position(process, window)
         target_position = (target_x, target_y)
-        print(target_position)
         direction = Direction.Left if source_x > target_x else Direction.Right
 
         parameters = {
@@ -943,7 +958,7 @@ def main():
         if (
             (
                 last_shot_at is None or
-                time() - last_shot_at > 15
+                time() - last_shot_at > 10
             ) and
             have_parameters_changed(parameters, previous_parameters)
         ):

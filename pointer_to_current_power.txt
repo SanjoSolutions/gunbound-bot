@@ -1,0 +1,18 @@
+0004e53e0: FUN_00467cf0(*(int *)(DAT_008701cc + 0x26e04),'\x01');
+00467cf2: iVar5 = param_1;
+0046802f: uVar4 = FUN_0042bfd0(iVar5 + 0x254);
+	In undefined4 __fastcall FUN_0042bfd0(int param_1):
+		iVar1 = *(int *)(param_1 + 4);
+		0042bfe3: MOV EBX, 0x1
+		0042bfe8: MOV ESI, EAX ; ESI = 008f4a00
+		0042bfea: CALL FUN_00403240
+			param1 = 0x33BF
+			param2 = 0x19F058
+			uVar1 = 0
+			iVar2 = param_1 << 2;
+			00403287: param_2[uVar1] =
+             			*(uint *)(*(int *)(unaff_ESI + 0x24) + (param_1 + uVar1 >> 3) * 4)
+				^
+             			*(uint *)(iVar2 + *(int *)(unaff_ESI + 0x1c));
+		0042bfef: MOV EAX, dword ptr [ESP + local_10]
+current power = uVar4
