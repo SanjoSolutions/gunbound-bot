@@ -325,29 +325,29 @@ g_table1 = (
     65.5,  # Aduka/Knight
     54.3,  # JFrog/Dragon
     88.5,  # Kalsiddon
-    1.0,  # Slots
-    1.0  # Aid
+    1.0,   # Slots
+    1.0    # Aid
 )
 
 g_table2 = (
-    0.74,  # Armor
-    0.78,
-    0.99,
-    0.87,
-    0.74,
-    1.395,
-    0.827,
-    0.72,
-    0.625,
-    0.765,
-    0.625,
-    0.74,
-    0.65,
-    0.695,
-    0.67,
-    0.905,
-    0.0,  # Slots
-    0.0  # Aid
+    0.74,   # Armor
+    0.78,   # Mage
+    0.99,   # Nak
+    0.87,   # Trico
+    0.74,   # Bigfoot
+    1.395,  # Boomer
+    0.827,  # Raon
+    0.72,   # Lightning
+    0.625,  # JD
+    0.765,  # Asate
+    0.625,  # Ice
+    0.74,   # Turtle
+    0.65,   # Grub
+    0.695,  # Aduka/Knight
+    0.67,   # JFrog/Dragon
+    0.905,  # Kalsiddon
+    0.0,    # Slots
+    0.0     # Aid
 )
 
 
