@@ -342,7 +342,7 @@ MAX_MAP_Y = 1840
 MAP_HEIGHT = MAX_MAP_Y - MIN_MAP_Y
 
 
-projectile_speeds = (
+wind_factors = (
     0.74,   # Armor
     0.78,   # Mage
     0.99,   # Nak
@@ -444,16 +444,16 @@ def generate_coordinates(
     angle,
     direction,
     backshot,
-    wind_angle,
-    wind_power,
+    wind_direction,
+    wind_speed,
     power,
     step_size
 ):
-    projectile_speed = projectile_speeds[mobile]
+    wind_factor = wind_factors[mobile]
     gravity = gravities[mobile]
 
-    acceleration_x = int(cos(radians(wind_angle)) * wind_power) * projectile_speed
-    acceleration_y = int(sin(radians(wind_angle)) * wind_power) * projectile_speed + gravity
+    acceleration_x = int(cos(radians(wind_direction)) * wind_speed) * wind_factor
+    acceleration_y = int(sin(radians(wind_direction)) * wind_speed) * wind_factor + gravity
 
     if mobile == Mobile.Nak and backshot and angle <= 70:
         acceleration_y *= -8.0
@@ -464,9 +464,12 @@ def generate_coordinates(
     speed_y = power * sin(radians(angle))
 
     speed = (speed_x, speed_y)
+    accelerated_speed = speed
 
     x = source_position[0]
     y = MAX_MAP_Y - source_position[1]
+
+    initial_position = (x, y)
 
     # if direction == Direction.Left:
     #     temp_x_v *= -1
@@ -478,16 +481,25 @@ def generate_coordinates(
 
     yield (x, y)
 
+    i = 0
+
     if y >= 0:
-        while MIN_MAP_X < x < MAX_MAP_X and y >= 0:
+        while MIN_MAP_X < x < MAX_MAP_X and y >= 0 and i <= 1000:
+            i += 1
             x += speed[0] * step_size
             y += speed[1] * step_size
 
             yield (x, y)
 
-            speed = (
-                speed[0] + acceleration[0] * step_size,
-                speed[1] + acceleration[1] * step_size
+            if not is_hook_shoot(mobile, angle, wind_direction, wind_speed):
+                speed = (
+                    speed[0] + acceleration[0] * step_size,
+                    speed[1] + acceleration[1] * step_size
+                )
+
+            accelerated_speed = (
+                accelerated_speed[0] + acceleration[0] * step_size,
+                accelerated_speed[1] + acceleration[1] * step_size
             )
 
             current_angle = atan2(speed[1], speed[0])
@@ -497,35 +509,47 @@ def generate_coordinates(
             B = 1
             C = 0.01
             a = sqrt(speed[0] ** 2 + speed[1] ** 2)
+            displayed_angle = angle if direction == Direction.Right else 180 - angle
             if (
                 not hook_angle_change_done and
-                mobile == Mobile.Boomer and
-                can_hook_shoot(direction, wind_angle, wind_power) and
+                is_hook_shoot(mobile, angle, wind_direction, wind_speed) and
+                distance(initial_position, (x, y)) >=
+                    (0.6 + ((power - 100) / 100.0) * 0.45) * power * (1 - 0.20 * min(1, ((wind_speed - 2) / 22.0))) * (1.05 + max(0, (45 - displayed_angle)) / 15.0 * 0.1) and
                 # a <= A + B * wind_power - C * power / 400.0 and
-                abs(angle - degrees(current_angle)) >= 14.75 and
+                # abs(accelerated_speed[1] / accelerated_speed[0]) <= 0.7872 and
+                # abs(angle - degrees(current_angle)) >= 14.75 and
                 (
                     (direction == Direction.Left and degrees(current_angle) >= 135) or
                     (direction == Direction.Right and (degrees(current_angle) <= 45 or degrees(current_angle) >= 270))
                 )
             ):
-                if direction == Direction.Left:
-                    new_angle = 270 - (180 - 90 - degrees(current_angle))
-                elif direction == Direction.Right:
-                    new_angle = 270 + (180 - 90 - degrees(current_angle))
-                additional_angle_offset = wind_power // 7
+                new_angle = 360 - degrees(current_angle)
+                additional_angle_offset = 25 * min(1, (wind_speed / 24))
                 if direction == Direction.Left:
                     new_angle += additional_angle_offset
                 elif direction == Direction.Right:
                     new_angle -= additional_angle_offset
                 speed = (
-                    speed[0],
+                    power * cos(radians(new_angle)),
                     power * sin(radians(new_angle))
                 )
                 hook_angle_change_done = True
 
 
-def can_hook_shoot(shooting_direction, wind_direction, wind_speed):
-    return wind_speed >= 2
+def distance(a, b):
+    return sqrt((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2)
+
+
+def is_hook_shoot(mobile, shooting_angle, wind_direction, wind_speed):
+    return (
+        mobile == Mobile.Boomer and
+        wind_speed >= 2 and
+        is_wind_blowing_against(shooting_angle, wind_direction)
+    )
+
+
+def is_wind_blowing_against(shooting_angle, wind_direction):
+    return abs(shooting_angle - wind_direction) > 90
 
 
 def draw_position(position, process, image, mobile_angle=None, cart_facing_direction=None):
@@ -942,8 +966,8 @@ def main():
         wind_angle = process.read_wind_direction()
         target_x, target_y = determine_target_position(process, window)
         target_position = (target_x, target_y)
-        print(target_position)
-        direction = Direction.Left if source_x > target_x else Direction.Right
+        # direction = Direction.Left if source_x > target_x else Direction.Right
+        direction = Direction.Left
 
         parameters = {
             'mobile': mobile,
@@ -964,16 +988,17 @@ def main():
             have_parameters_changed(parameters, previous_parameters)
         ):
             shot_parameters = None
-            power = determine_power(
-                mobile,
-                source_position,
-                target_position,
-                angle,
-                direction,
-                backshot,
-                wind_angle,
-                wind_power
-            )
+            # power = determine_power(
+            #     mobile,
+            #     source_position,
+            #     target_position,
+            #     angle,
+            #     direction,
+            #     backshot,
+            #     wind_angle,
+            #     wind_power
+            # )
+            power = 300
 
         image = create_image_with_size(client_area_rect['width'], client_area_rect['height'])
         draw_parameters = shot_parameters if shot_parameters is not None else parameters
