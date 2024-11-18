@@ -1,3 +1,6 @@
+> [!NOTE]
+> A working bot for the [official Gunbound](https://gunbound.gnjoy.asia/) can be purchased from me [here](https://www.patreon.com/SanjoSolutions/shop/bot-for-gunbound-674682).
+
 # Gunbound Bot
 
 This work is devoted to God.
