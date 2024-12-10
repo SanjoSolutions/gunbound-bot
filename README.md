@@ -1,5 +1,5 @@
 > [!NOTE]
-> A working aimbot for the [official Gunbound](https://gunbound.gnjoy.asia/) can be purchased from me [here](https://www.patreon.com/SanjoSolutions/shop/aimbot-for-gunbound-674682).
+> A working aimbot for the [official Gunbound](https://gunbound.gnjoy.asia/) can be purchased from me [here](https://sanjox.itch.io/aimbot-for-gunbound).
 
 # Gunbound Bot
 
